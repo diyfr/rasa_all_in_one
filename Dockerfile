@@ -15,6 +15,11 @@ RUN apt-get update -qq && \
   libffi6 \
   libffi-dev \
   libpng-dev \
+  haskell-stack \
+  libpcre3 \
+  libpcre3-dev \
+  libghc-zlib-dev \
+  libghc-zlib-bindings-dev \
   curl && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
@@ -27,5 +32,14 @@ RUN pip install rasa_nlu[spacy]
 
 #RASA_SDK
 RUN pip install rasa_core_sdk
+
+#DUCKLING
+RUN mkdir /duck
+WORKDIR /duck
+RUN git clone https://github.com/facebook/duckling.git
+WORKDIR /duck/duckling
+RUN stack setup
+RUN stack build
+
 
 EXPOSE 5005
